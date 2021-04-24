@@ -26,10 +26,18 @@ public class ProdutoService {
 	@Autowired
 	private ProdutoRepository produtoRepository;
 	
+	double a = 0;
+	
 	public Produto compraProduto(long idProduto, long idPedido/*, int qtdProduto*/) {
 			
 		Optional<Produto> produtoExistente = produtoRepository.findById(idProduto);
 		Optional<Pedido> pedidoExistente = pedidoRepository.findById(idPedido);
+		
+		if(produtoExistente.isPresent() && pedidoExistente.isPresent() && produtoExistente.get().getEstoque() == 0) {
+			/* ACRESCENTA MAIS 50 PRODUTOS AO ESTOQUE */
+			produtoExistente.get().setEstoque(50);
+			
+		}
 		
 		/* SE O 'PRODUTO' E 'PEDIDO' EXISTIREM, E SE O 'ESTOQUE' CONTEM PRODUTOS DISPONIVEIS ENTRA NA CONDICAO */
 		if(produtoExistente.isPresent() && pedidoExistente.isPresent() && produtoExistente.get().getEstoque() >= 0 && !(pedidoExistente.get().getProdutos().isEmpty())) {
@@ -131,6 +139,61 @@ public class ProdutoService {
 		}
 		
 		//return null;
+	}
+	
+	/* DELETAR OBJETOS DO PRODUTO */
+	public void deletarProduto(long idProduto, long idPedido) {
+
+		Optional<Produto> produtoExistente = produtoRepository.findById(idProduto);
+		Optional<Pedido> pedidoExistente = pedidoRepository.findById(idPedido);
+		
+		if(pedidoExistente.get().getProdutos().contains(produtoExistente.get())) {
+			/* REMOVE O CARRINHO DO PRODUTO */
+			produtoExistente.get().getPedidos().remove(pedidoExistente.get());
+			
+			/* GERENCIA O ESTOQUE DEBITNADO UM PRODUTO DO ESTOQUE */
+			produtoExistente.get().setEstoque(produtoExistente.get().getEstoque() + 1);
+			
+			int contador = 0;
+			
+			//System.out.println("Valor: "+ pedidoExistente.get().getProdutos().get((int)idProduto).getId());
+			
+			/* ARMAZENA OS IDs DOS PRODUTOS LISTADOS DENTRO DO CARRINHO DO USUARIO */
+			long[] vetor = new long[pedidoExistente.get().getProdutos().size()];
+			
+			for(int i = 0; i < pedidoExistente.get().getProdutos().size(); i++) {
+				
+				vetor[i] = pedidoExistente.get().getProdutos().get(i).getId();
+				
+				System.out.println("Posicao do vetor ["+ i +"] = "+ vetor[i]);
+				System.out.println("Produto ID: "+ produtoExistente.get().getId());
+				
+				if(vetor[i] == produtoExistente.get().getId()) {
+					contador++;
+					
+				}
+				
+			}
+			
+			produtoExistente.get().setQtdPedidoProduto(contador - 1);
+			
+			/* AJUSTA O VALOR DO CARRINHO DE UM USUARIO ESPECIFICO */
+			pedidoExistente.get().setValorTotal(pedidoExistente.get().getValorTotal() - produtoExistente.get().getPreco());
+			
+			a = pedidoExistente.get().getValorTotal();
+			a = Math.floor(a * 100) / 100;
+				pedidoExistente.get().setValorTotal(a);
+				
+			if(pedidoExistente.get().getValorTotal() < 0) {
+				pedidoExistente.get().setValorTotal(0);
+			}
+			
+			produtoRepository.save(produtoExistente.get());
+			pedidoRepository.save(pedidoExistente.get());
+			pedidoRepository.save(pedidoExistente.get()).getValorTotal();
+			
+		}
+		
 	}
 
 }

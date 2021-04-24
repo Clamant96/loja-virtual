@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.helpconnect.LojaVirtual.model.Pedido;
+import br.com.helpconnect.LojaVirtual.model.Produto;
 import br.com.helpconnect.LojaVirtual.repository.PedidoRepository;
+import br.com.helpconnect.LojaVirtual.service.ProdutoService;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -25,6 +27,9 @@ public class PedidoController {
 	
 	@Autowired
 	private PedidoRepository repository;
+	
+	@Autowired
+	private ProdutoService service;
 	
 	@GetMapping
 	public ResponseEntity<List<Pedido>> findAllByPedidos() {
@@ -56,6 +61,12 @@ public class PedidoController {
 	public void deletePedido(@PathVariable long id) {
 		
 		repository.deleteById(id);
+	}
+	
+	@DeleteMapping("/produto_pedido/produtos/{idProduto}/pedidos/{idPedido}")
+	public void putProduto(@PathVariable long idProduto, @PathVariable long idPedido) {
+		
+		service.deletarProduto(idProduto, idPedido);
 	}
 
 }
