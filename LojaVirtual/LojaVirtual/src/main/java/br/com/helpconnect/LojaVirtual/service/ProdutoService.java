@@ -45,22 +45,12 @@ public class ProdutoService {
 			/* ADICIONA O PRODUTO AO CARRINHO DO USUARIO */
 			produtoExistente.get().getPedidos().add(pedidoExistente.get());
 			
-			/*produtoExistente.get().setQtdPedidoProduto(1);
-			produtoExistente.get().setEstoque(produtoExistente.get().getEstoque() - 1);*/
-			
-			//pedidoExistente.get().setValorTotal(pedidoExistente.get().getValorTotal() + (produtoExistente.get().getPreco() * produtoExistente.get().getQtdPedidoProduto()));
-			
-			/* AJUSTA O CARRINHO RETIRANDO O VALOR DO PRODUTO DE DENTRO DO VALOR DO CARRINHO DO USUARIO */
-			//pedidoExistente.get().setValorTotal(pedidoExistente.get().getValorTotal() - (produtoExistente.get().getPreco() * produtoExistente.get().getQtdPedidoProduto()));
-			
 			System.out.println("Retorno: "+ pedidoExistente.get().getProdutos().contains(produtoExistente.get()));
 			
 			System.out.println("QTD produtos "+ pedidoExistente.get().getProdutos().size());
 			
 			/* ARMAZENA A QTD DE PRODUTOS */
 			int contador = 0;
-			
-			//System.out.println("Valor: "+ pedidoExistente.get().getProdutos().get((int)idProduto).getId());
 			
 			/* ARMAZENA OS IDs DOS PRODUTOS LISTADOS DENTRO DO CARRINHO DO USUARIO */
 			long[] vetor = new long[pedidoExistente.get().getProdutos().size()];
@@ -81,6 +71,7 @@ public class ProdutoService {
 			
 			System.out.println("Valor Total a Pagar ATUAL "+ pedidoExistente.get().getValorTotal());
 			
+			/* RETIRA O VALOR EXISTENTE DO CARRINHO PARA PODER SER RECALCULADO */
 			pedidoExistente.get().setValorTotal(pedidoExistente.get().getValorTotal() - (produtoExistente.get().getPreco() * contador));
 			
 			/* COMPENSA ACRESCENTANDO O NOVO PRODUTO AO CARRINHO ==> O ID INFORMADO */
@@ -128,8 +119,6 @@ public class ProdutoService {
 			System.out.println("ELSE");
 			System.out.println("ID: "+ pedidoExistente.get().getId() +" | Valor a pagar: "+ pedidoExistente.get().getValorTotal());
 			
-			//pedidoExistente.get().setQtdProduto(1);
-			
 			produtoRepository.save(produtoExistente.get());
 			pedidoRepository.save(pedidoExistente.get());
 			pedidoRepository.save(pedidoExistente.get()).getValorTotal();
@@ -155,8 +144,6 @@ public class ProdutoService {
 			produtoExistente.get().setEstoque(produtoExistente.get().getEstoque() + 1);
 			
 			int contador = 0;
-			
-			//System.out.println("Valor: "+ pedidoExistente.get().getProdutos().get((int)idProduto).getId());
 			
 			/* ARMAZENA OS IDs DOS PRODUTOS LISTADOS DENTRO DO CARRINHO DO USUARIO */
 			long[] vetor = new long[pedidoExistente.get().getProdutos().size()];
