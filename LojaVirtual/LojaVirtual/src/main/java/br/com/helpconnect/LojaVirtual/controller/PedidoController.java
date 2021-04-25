@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.helpconnect.LojaVirtual.model.Pedido;
-import br.com.helpconnect.LojaVirtual.model.Produto;
 import br.com.helpconnect.LojaVirtual.repository.PedidoRepository;
 import br.com.helpconnect.LojaVirtual.service.ProdutoService;
 

@@ -1,19 +1,12 @@
 package br.com.helpconnect.LojaVirtual.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.StreamingHttpOutputMessage.Body;
 import org.springframework.stereotype.Service;
 
-import br.com.helpconnect.LojaVirtual.model.Cliente;
 import br.com.helpconnect.LojaVirtual.model.Pedido;
 import br.com.helpconnect.LojaVirtual.model.Produto;
-import br.com.helpconnect.LojaVirtual.repository.ClienteRepository;
 import br.com.helpconnect.LojaVirtual.repository.PedidoRepository;
 import br.com.helpconnect.LojaVirtual.repository.ProdutoRepository;
 
@@ -28,7 +21,7 @@ public class ProdutoService {
 	
 	double a = 0;
 	
-	public Produto compraProduto(long idProduto, long idPedido/*, int qtdProduto*/) {
+	public Produto compraProduto(long idProduto, long idPedido) {
 			
 		Optional<Produto> produtoExistente = produtoRepository.findById(idProduto);
 		Optional<Pedido> pedidoExistente = pedidoRepository.findById(idPedido);
@@ -104,7 +97,7 @@ public class ProdutoService {
 			
 			return produtoRepository.save(produtoExistente.get());
 			
-		}else {
+		}else if(produtoExistente.isPresent() && pedidoExistente.isPresent()) {
 			/* ADICIONA O PRODUTO AO CARRINHO DO USUARIO */
 			produtoExistente.get().getPedidos().add(pedidoExistente.get());
 			
@@ -127,7 +120,7 @@ public class ProdutoService {
 			
 		}
 		
-		//return null;
+		return null;
 	}
 	
 	/* DELETAR OBJETOS DO PRODUTO */
