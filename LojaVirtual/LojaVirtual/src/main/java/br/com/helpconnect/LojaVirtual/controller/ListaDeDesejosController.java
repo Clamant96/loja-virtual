@@ -43,6 +43,12 @@ public class ListaDeDesejosController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 	
+	@GetMapping("/listaDeDesejo/{idListaDeDesejo}/nome/{nome}")
+	public ResponseEntity<List<Produto>> findByIdProdutoListaDeDesejos(@PathVariable long idListaDeDesejo, @PathVariable String nome) {
+		
+		return ResponseEntity.ok(service.pesquisaPorIdDeProdutoNaListaDeDesejos(idListaDeDesejo, nome));
+	}
+	
 	@PostMapping
 	public ResponseEntity<ListaDeDesejos> postListaDeDesejos(@RequestBody ListaDeDesejos listaDeDesejos) {
 		

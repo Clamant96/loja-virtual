@@ -1,5 +1,6 @@
 package br.com.helpconnect.LojaVirtual.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class ProdutoService {
 	private ListaDeDesejosRepository listaDeDesejoRepository;
 	
 	double a = 0;
+	int posicao = 0; // aramazena a posicao do item dentro do array de lista de desejos
 	
 	public Produto compraProduto(long idProduto, long idPedido) {
 			
@@ -214,6 +216,26 @@ public class ProdutoService {
 			produtoRepository.save(produtoExistente.get());
 			
 			return produtoRepository.save(produtoExistente.get());
+			
+		}
+		
+		return null;
+		
+	}
+	
+	/* PESQUISANDO POR PRODUTO ESPECIFICO EM UMA LISTA DE DESEJOS DE PRODUTOS */
+	public List<Produto> pesquisaPorIdDeProdutoNaListaDeDesejos(long idListaDeDesejo, String nome) {
+		Optional<ListaDeDesejos> listaDeDesejoExistente = listaDeDesejoRepository.findById(idListaDeDesejo);
+		
+		// ARMAZENA OS IDs DOS PRODUTOS LISTADOS DENTRO DO CARRINHO DO USUARIO
+		long[] vetor = new long[listaDeDesejoExistente.get().getProdutos().size()];
+		
+		for(int i = 0; i < vetor.length; i++) {
+			
+			if(listaDeDesejoExistente.get().getProdutos().get(i).getNome().contains(nome)) {
+				
+				return produtoRepository.findAllByNomeContainingIgnoreCase(nome);	
+			}
 			
 		}
 		
