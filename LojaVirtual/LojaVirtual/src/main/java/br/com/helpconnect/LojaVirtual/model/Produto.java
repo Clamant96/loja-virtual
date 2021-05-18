@@ -66,6 +66,15 @@ public class Produto {
 	@JsonIgnoreProperties({"data", "valorTotal", "produtos", "cliente", "qtdProduto"})
 	private List<Pedido> pedidos = new ArrayList<>();
 	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(
+	  name = "produto_lista",
+	  joinColumns = @JoinColumn(name = "produto_id"),
+	  inverseJoinColumns = @JoinColumn(name = "lista_id")
+	)
+	@JsonIgnoreProperties({"produtos", "cliente"})
+	private List<ListaDeDesejos> listaDesejos = new ArrayList<>();
+	
 	public long getId() {
 		return id;
 	}
@@ -144,6 +153,14 @@ public class Produto {
 
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
+	}
+
+	public List<ListaDeDesejos> getListaDesejos() {
+		return listaDesejos;
+	}
+
+	public void setListaDesejos(List<ListaDeDesejos> listaDesejos) {
+		this.listaDesejos = listaDesejos;
 	}
 	
 }

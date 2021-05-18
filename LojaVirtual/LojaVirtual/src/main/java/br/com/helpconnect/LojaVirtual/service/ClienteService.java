@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import br.com.helpconnect.LojaVirtual.model.Cliente;
 import br.com.helpconnect.LojaVirtual.model.ClienteLogin;
+import br.com.helpconnect.LojaVirtual.model.ListaDeDesejos;
 import br.com.helpconnect.LojaVirtual.model.Pedido;
 import br.com.helpconnect.LojaVirtual.repository.ClienteRepository;
+import br.com.helpconnect.LojaVirtual.repository.ListaDeDesejosRepository;
 import br.com.helpconnect.LojaVirtual.repository.PedidoRepository;
 
 @Service
@@ -22,6 +24,9 @@ public class ClienteService {
 	
 	@Autowired
 	private PedidoRepository pedidoRepository;
+	
+	@Autowired
+	private ListaDeDesejosRepository listaDeDesejosRepository;
 	
 	/* CADASTRA UM NOVO CLIENTE DENTRO DA BASE DE DADOS */
 	/*public Cliente cadastrarCliente(Cliente cliente) {
@@ -58,14 +63,24 @@ public class ClienteService {
 		/* INSTANCIA UM NOVO CARRINHO 'Pedido' */
 		Pedido pedido = new Pedido();
 		
+		/*GERANDO LISTA DE DESEJOS USUARIO*/
+		/* INSTANCIA UMA NOVA LISTA DE DESEJOS 'listaDeDesejos' */
+		ListaDeDesejos listaDeDesejos = new ListaDeDesejos();
+		
 		/* REGISTRA O USUARIO NA BASE DE DADOS */
 		clienteRepository.save(cliente);
 		
 		/* ASSOCIA O USUARIO AO CARRINHO */
 		pedido.setCliente(cliente);
 		
+		/* ASSOCIA O USUARIO AO LISTA DE DESEJOS */
+		listaDeDesejos.setCliente(cliente);
+		
 		/* REGISTRA O CARRINHO NA BASE DE DADOS */
 		pedidoRepository.save(pedido);
+		
+		/* REGISTRA A LISTA DE DESEJOS NA BASE DE DADOS */
+		listaDeDesejosRepository.save(listaDeDesejos);
 
 		return Optional.of(clienteRepository.save(cliente));
 

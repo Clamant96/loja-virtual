@@ -5,8 +5,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.helpconnect.LojaVirtual.model.ListaDeDesejos;
 import br.com.helpconnect.LojaVirtual.model.Pedido;
 import br.com.helpconnect.LojaVirtual.model.Produto;
+import br.com.helpconnect.LojaVirtual.repository.ListaDeDesejosRepository;
 import br.com.helpconnect.LojaVirtual.repository.PedidoRepository;
 import br.com.helpconnect.LojaVirtual.repository.ProdutoRepository;
 
@@ -18,6 +20,9 @@ public class ProdutoService {
 	
 	@Autowired
 	private ProdutoRepository produtoRepository;
+	
+	@Autowired
+	private ListaDeDesejosRepository listaDeDesejoRepository;
 	
 	double a = 0;
 	
@@ -173,6 +178,46 @@ public class ProdutoService {
 			pedidoRepository.save(pedidoExistente.get()).getValorTotal();
 			
 		}
+		
+	}
+	
+	/* ADICIONA UM PRODUTO ESPECIFICO A LISTA DE DESEJOS DO USUARIO */
+	public Produto adicionarProdutoListaDeDesejo(long idProduto, long idListaDeDesejo) {
+		Optional<Produto> produtoExistente = produtoRepository.findById(idProduto);
+		Optional<ListaDeDesejos> listaDeDesejoExistente = listaDeDesejoRepository.findById(idListaDeDesejo);
+		
+		/* CASO OS ITENS EXISTAM NA BASE DE DADOS E O PRODUTO AINDA NAO ESTEJA INCLUSO DENTRO DA LSITA DE DESEJOS */
+		if(produtoExistente.isPresent() && listaDeDesejoExistente.isPresent() && !(produtoExistente.get().getListaDesejos().contains(listaDeDesejoExistente.get()))) {
+			/* ADICIONA O PRODUTO A LISTA DE DESEJOS DO USUARIO */
+			produtoExistente.get().getListaDesejos().add(listaDeDesejoExistente.get());
+			
+			produtoRepository.save(produtoExistente.get());
+			
+			return produtoRepository.save(produtoExistente.get());
+			
+		}
+		
+		return null;
+		
+	}
+	
+	/* REMOVE UM PRODUTO ESPECIFICO DA LISTA DE DESEJOS DO USUARIO */
+	public Produto removeProdutoListaDeDesejo(long idProduto, long idListaDeDesejo) {
+		Optional<Produto> produtoExistente = produtoRepository.findById(idProduto);
+		Optional<ListaDeDesejos> listaDeDesejoExistente = listaDeDesejoRepository.findById(idListaDeDesejo);
+		
+		/* CASO OS ITENS EXISTAM NA BASE DE DADOS E O PRODUTO AINDA NAO ESTEJA INCLUSO DENTRO DA LSITA DE DESEJOS */
+		if(produtoExistente.get().getListaDesejos().contains(listaDeDesejoExistente.get())) {
+			/* REMOVE O CARRINHO DO PRODUTO */
+			produtoExistente.get().getListaDesejos().remove(listaDeDesejoExistente.get());
+			
+			produtoRepository.save(produtoExistente.get());
+			
+			return produtoRepository.save(produtoExistente.get());
+			
+		}
+		
+		return null;
 		
 	}
 

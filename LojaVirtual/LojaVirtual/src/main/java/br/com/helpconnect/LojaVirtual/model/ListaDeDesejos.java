@@ -1,7 +1,6 @@
 package br.com.helpconnect.LojaVirtual.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -10,38 +9,29 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "pedido")
-public class Pedido {
+@Table(name="lista_de_desejos")
+public class ListaDeDesejos {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date data = new java.sql.Date(System.currentTimeMillis());
+	@ManyToOne
+	@JsonIgnoreProperties("listaDeDesejos")
+	private Cliente cliente;
 	
-	private double valorTotal;
-	
-	private int qtdProduto;
-	
-	@ManyToMany(mappedBy = "pedidos", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(mappedBy = "listaDesejos", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonIgnoreProperties({"nome", "descricao", "marca", "img", "preco", "estoque", "categoria", "pedidos", "qtdPedidoProduto", "listaDesejos"})
 	private List<Produto> produtos = new ArrayList<>();
-	
-	@ManyToOne
-	@JsonIgnoreProperties("pedidos")
-	private Cliente cliente;
 
 	public long getId() {
 		return id;
@@ -49,22 +39,6 @@ public class Pedido {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public Date getData() {
-		return data;
-	}
-
-	public void setData(Date data) {
-		this.data = data;
-	}
-
-	public double getValorTotal() {
-		return valorTotal;
-	}
-
-	public void setValorTotal(double valorTotal) {
-		this.valorTotal = valorTotal;
 	}
 
 	public Cliente getCliente() {
@@ -81,14 +55,6 @@ public class Pedido {
 
 	public void setProdutos(List<Produto> produtos) {
 		this.produtos = produtos;
-	}
-
-	public int getQtdProduto() {
-		return qtdProduto;
-	}
-
-	public void setQtdProduto(int qtdProduto) {
-		this.qtdProduto = qtdProduto;
 	}
 
 }

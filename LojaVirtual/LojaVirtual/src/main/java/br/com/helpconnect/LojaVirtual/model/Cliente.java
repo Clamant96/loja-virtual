@@ -86,6 +86,10 @@ public class Cliente {
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
 	@JsonIgnoreProperties("cliente")
 	private List<Pedido> pedidos;
+	
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties("cliente")
+	private List<ListaDeDesejos> listaDeDesejos;
 
 	public long getId() {
 		return id;
@@ -229,6 +233,14 @@ public class Cliente {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public List<ListaDeDesejos> getListaDeDesejos() {
+		return listaDeDesejos;
+	}
+
+	public void setListaDeDesejos(List<ListaDeDesejos> listaDeDesejos) {
+		this.listaDeDesejos = listaDeDesejos;
 	}
 
 }

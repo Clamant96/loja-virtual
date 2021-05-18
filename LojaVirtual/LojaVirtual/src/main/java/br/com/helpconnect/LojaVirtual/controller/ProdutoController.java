@@ -68,6 +68,12 @@ public class ProdutoController {
 		return ResponseEntity.ok(service.compraProduto(idProduto, idPedido/*, qtdProduto*/));
 	}
 	
+	@PutMapping("/produto_lista/produtos/{idProduto}/listaDesejos/{idListaDeDesejo}")
+	public ResponseEntity<Produto> adicionaProdutoListaDeDesejos(@PathVariable long idProduto, @PathVariable long idListaDeDesejo/*, @PathVariable int qtdProduto*/) {
+		
+		return ResponseEntity.ok(service.adicionarProdutoListaDeDesejo(idProduto, idListaDeDesejo/*, qtdProduto*/));
+	}
+	
 	@DeleteMapping("/{id}")
 	public void deleteProduto(@PathVariable long id) {
 		
