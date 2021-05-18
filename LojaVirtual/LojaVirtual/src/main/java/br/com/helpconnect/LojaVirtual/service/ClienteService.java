@@ -44,7 +44,7 @@ public class ClienteService {
 	/* CADASTRAR USUARIO NO SISTEMA */
 	public Optional<Cliente> CadastrarCliente(Cliente cliente) {	
 
-		if(clienteRepository.findByEmail(cliente.getEmail()).isPresent()) {
+		if(clienteRepository.findByEmail(cliente.getEmail()).isPresent() && cliente.getId() == 0) {
 			return null;
 			
 		}
@@ -96,6 +96,20 @@ public class ClienteService {
 				clienteLogin.get().setUsuario(cliente.get().getUsuario());
 				clienteLogin.get().setEmail(cliente.get().getEmail());
 				clienteLogin.get().setSenha(cliente.get().getSenha());
+				clienteLogin.get().setFoto(cliente.get().getFoto());
+				clienteLogin.get().setTipo(cliente.get().getTipo());
+				clienteLogin.get().setNome(cliente.get().getNome());
+				/*clienteLogin.get().setBairro(cliente.get().getBairro());
+				clienteLogin.get().setCep(cliente.get().getCep());
+				clienteLogin.get().setCidade(cliente.get().getCidade());
+				clienteLogin.get().setComplemento(cliente.get().getComplemento());
+				clienteLogin.get().setCpf(cliente.get().getCpf());
+				clienteLogin.get().setEndereco(cliente.get().getEndereco());
+				clienteLogin.get().setEstado(cliente.get().getEstado());
+				clienteLogin.get().setFone(cliente.get().getFone());
+				clienteLogin.get().setId(cliente.get().getId());
+				clienteLogin.get().setNumero(cliente.get().getNumero());
+				clienteLogin.get().setPais(cliente.get().getPais());*/
 				
 				return clienteLogin;
 

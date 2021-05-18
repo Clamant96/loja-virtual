@@ -33,7 +33,7 @@ public class Cliente {
 	@Size(max = 50)
 	private String usuario;
 	
-	@NotNull
+	/*@NotNull*/
 	@Size(max = 11)
 	private String fone;
 	
@@ -41,43 +41,47 @@ public class Cliente {
 	@Email
 	private String email;
 	
-	@NotNull
+	/*@NotNull*/
 	@CPF
 	private String cpf;
 	
 	@NotNull
 	private String senha;
 	
-	@NotNull
+	/*@NotNull*/
 	@Size(max = 100)
 	private String endereco;
 	
-	@NotNull
+	/*@NotNull*/
 	@Size(max = 5)
 	private String numero;
 	
 	@Size(max = 100)
 	private String complemento;
 	
-	@NotNull
+	/*@NotNull*/
 	@Size(max = 50)
 	private String bairro;
 	
-	@NotNull
+	/*@NotNull*/
 	@Size(max = 8)
 	private String cep;
 	
-	@NotNull
+	/*@NotNull*/
 	@Size(max = 50)
 	private String cidade;
 	
-	@NotNull
+	/*@NotNull*/
 	@Size(max = 50)
 	private String estado;
 	
-	@NotNull
+	/*@NotNull*/
 	@Size(max = 20)
 	private String pais;
+	
+	private String foto;
+	
+	private String tipo;
 	
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
 	@JsonIgnoreProperties("cliente")
@@ -209,6 +213,22 @@ public class Cliente {
 
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
+	}
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 }
