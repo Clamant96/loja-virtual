@@ -44,6 +44,7 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/listadesejo/{id}").permitAll()
 		.antMatchers("/listadesejo/listaDeDesejo/{id}").permitAll()
 		.antMatchers("/listadesejo/listaDeDesejo/{idListaDeDesejo}").permitAll()
+		.antMatchers("/listadesejo/produto_lista/produtos/{idProduto}/listaDesejos/{idListaDeDesejo}").permitAll()
 		.antMatchers("/produtos/produto_lista").permitAll()
 		.antMatchers("/produtos/produto_lista/{id}").permitAll()
 		.antMatchers("/produtos/produto_lista/produtos/{idProduto}/listaDesejos/{idListaDeDesejo}").permitAll()
