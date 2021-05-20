@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.helpconnect.LojaVirtual.model.Pedido;
+import br.com.helpconnect.LojaVirtual.model.Produto;
 import br.com.helpconnect.LojaVirtual.repository.PedidoRepository;
 import br.com.helpconnect.LojaVirtual.service.ProdutoService;
 
@@ -42,6 +43,12 @@ public class PedidoController {
 		return repository.findById(id)
 				.map(resp -> ResponseEntity.ok(resp))
 				.orElse(ResponseEntity.notFound().build());
+	}
+	
+	@GetMapping("/meuspedidos/{idPedido}")
+	public ResponseEntity<List<Produto>> findAllByProdutosListaDeDesejos(@PathVariable long idPedido) {
+		
+		return ResponseEntity.ok(service.pesquisaPorProdutoNoCarrinho(idPedido));
 	}
 	
 	@PostMapping

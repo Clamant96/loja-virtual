@@ -190,10 +190,17 @@ public class ProdutoService {
 		
 		/* CASO OS ITENS EXISTAM NA BASE DE DADOS E O PRODUTO AINDA NAO ESTEJA INCLUSO DENTRO DA LSITA DE DESEJOS */
 		if(produtoExistente.isPresent() && listaDeDesejoExistente.isPresent() && !(produtoExistente.get().getListaDesejos().contains(listaDeDesejoExistente.get()))) {
-			/* ADICIONA O PRODUTO A LISTA DE DESEJOS DO USUARIO */
+			// ADICIONA O PRODUTO A LISTA DE DESEJOS DO USUARIO
+			
+			System.out.println("Acessou o produto e lista por id");
+			
 			produtoExistente.get().getListaDesejos().add(listaDeDesejoExistente.get());
 			
+			System.out.println("Adicionou o produto a lista");
+			
 			produtoRepository.save(produtoExistente.get());
+			
+			System.out.println("Salvou o produto com o novo dado");
 			
 			return produtoRepository.save(produtoExistente.get());
 			
@@ -236,6 +243,36 @@ public class ProdutoService {
 				
 				return produtoRepository.findAllByNomeContainingIgnoreCase(nome);	
 			}
+			
+		}
+		
+		return null;
+		
+	}
+	
+	/* PESQUISANDO POR PRODUTO ESPECIFICO EM UMA LISTA DE DESEJOS DE PRODUTOS */
+	public List<Produto> pesquisaPorProdutoNaListaDeDesejos(long idListaDeDesejo) {
+		Optional<ListaDeDesejos> listaDeDesejoExistente = listaDeDesejoRepository.findById(idListaDeDesejo);
+		
+		if(listaDeDesejoExistente.isPresent()) {
+			listaDeDesejoExistente.get().getProdutos();
+			
+			return listaDeDesejoRepository.save(listaDeDesejoExistente.get()).getProdutos();
+			
+		}
+		
+		return null;
+		
+	}
+	
+	/* PESQUISANDO POR PRODUTO ESPECIFICO EM UMA LISTA DE DESEJOS DE PRODUTOS */
+	public List<Produto> pesquisaPorProdutoNoCarrinho(long idPedido) {
+		Optional<Pedido> pedidoExistente = pedidoRepository.findById(idPedido);
+		
+		if(pedidoExistente.isPresent()) {
+			pedidoExistente.get().getProdutos();
+			
+			return pedidoRepository.save(pedidoExistente.get()).getProdutos();
 			
 		}
 		

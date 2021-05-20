@@ -56,7 +56,7 @@ public class ProdutoController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(produto));
 	}
 	
-	 @PutMapping
+	@PutMapping
 	public ResponseEntity<Produto> putProduto(@RequestBody Produto produto) {
 		
 		return ResponseEntity.ok(repository.save(produto));
@@ -69,9 +69,9 @@ public class ProdutoController {
 	}
 	
 	@PutMapping("/produto_lista/produtos/{idProduto}/listaDesejos/{idListaDeDesejo}")
-	public ResponseEntity<Produto> adicionaProdutoListaDeDesejos(@PathVariable long idProduto, @PathVariable long idListaDeDesejo/*, @PathVariable int qtdProduto*/) {
+	public ResponseEntity<Produto> adicionaProdutoListaDeDesejos(@PathVariable long idProduto, @PathVariable long idListaDeDesejo) {
 		
-		return ResponseEntity.ok(service.adicionarProdutoListaDeDesejo(idProduto, idListaDeDesejo/*, qtdProduto*/));
+		return ResponseEntity.ok(service.adicionarProdutoListaDeDesejo(idProduto, idListaDeDesejo));
 	}
 	
 	@DeleteMapping("/{id}")

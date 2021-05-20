@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +21,8 @@ import br.com.helpconnect.LojaVirtual.repository.ListaDeDesejosRepository;
 import br.com.helpconnect.LojaVirtual.service.ProdutoService;
 
 @RestController
-@RequestMapping("/lista_desejo")
+@RequestMapping("/listadesejo")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ListaDeDesejosController {
 	
 	@Autowired
@@ -44,9 +46,15 @@ public class ListaDeDesejosController {
 	}
 	
 	@GetMapping("/listaDeDesejo/{idListaDeDesejo}/nome/{nome}")
-	public ResponseEntity<List<Produto>> findByIdProdutoListaDeDesejos(@PathVariable long idListaDeDesejo, @PathVariable String nome) {
+	public ResponseEntity<List<Produto>> findAllByNomeProdutoListaDeDesejos(@PathVariable long idListaDeDesejo, @PathVariable String nome) {
 		
 		return ResponseEntity.ok(service.pesquisaPorIdDeProdutoNaListaDeDesejos(idListaDeDesejo, nome));
+	}
+	
+	@GetMapping("/listaDeDesejo/{idListaDeDesejo}")
+	public ResponseEntity<List<Produto>> findAllByProdutosListaDeDesejos(@PathVariable long idListaDeDesejo) {
+		
+		return ResponseEntity.ok(service.pesquisaPorProdutoNaListaDeDesejos(idListaDeDesejo));
 	}
 	
 	@PostMapping
@@ -62,7 +70,7 @@ public class ListaDeDesejosController {
 	}
 	
 	@DeleteMapping("/produto_lista/produtos/{idProduto}/listaDesejos/{idListaDeDesejo}")
-	public ResponseEntity<Produto> adicionaProdutoListaDeDesejos(@PathVariable long idProduto, @PathVariable long idListaDeDesejo) {
+	public ResponseEntity<Produto> removeProdutoListaDeDesejos(@PathVariable long idProduto, @PathVariable long idListaDeDesejo) {
 		
 		return ResponseEntity.ok(service.removeProdutoListaDeDesejo(idProduto, idListaDeDesejo));
 	}

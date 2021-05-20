@@ -11,6 +11,6 @@ import br.com.helpconnect.LojaVirtual.model.Produto;
 @Repository
 public interface ListaDeDesejosRepository extends JpaRepository<ListaDeDesejos, Long> {
 	
-	//public List<Produto> findAllByProdutosContainingIgnoreCase(String produtos);
+	//public List<ListaDeDesejos> findAllByProdutosContainingIgnoreCase(long id);
 
 }

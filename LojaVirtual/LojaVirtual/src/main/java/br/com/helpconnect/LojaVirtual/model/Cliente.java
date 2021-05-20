@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -83,13 +85,21 @@ public class Cliente {
 	
 	private String tipo;
 	
-	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+	/*@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
 	@JsonIgnoreProperties("cliente")
-	private List<Pedido> pedidos;
+	private List<Pedido> pedidos;*/
+	@OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    @JsonIgnoreProperties("cliente")
+	private Pedido pedidos;
 	
-	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+	/*@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
 	@JsonIgnoreProperties("cliente")
-	private List<ListaDeDesejos> listaDeDesejos;
+	private List<ListaDeDesejos> listaDeDesejos;*/
+	@OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    @JsonIgnoreProperties("cliente")
+	private ListaDeDesejos listaDeDesejos;
 
 	public long getId() {
 		return id;
@@ -211,11 +221,11 @@ public class Cliente {
 		this.pais = pais;
 	}
 
-	public List<Pedido> getPedidos() {
+	public Pedido getPedidos() {
 		return pedidos;
 	}
 
-	public void setPedidos(List<Pedido> pedidos) {
+	public void setPedidos(Pedido pedidos) {
 		this.pedidos = pedidos;
 	}
 
@@ -235,11 +245,11 @@ public class Cliente {
 		this.tipo = tipo;
 	}
 
-	public List<ListaDeDesejos> getListaDeDesejos() {
+	public ListaDeDesejos getListaDeDesejos() {
 		return listaDeDesejos;
 	}
 
-	public void setListaDeDesejos(List<ListaDeDesejos> listaDeDesejos) {
+	public void setListaDeDesejos(ListaDeDesejos listaDeDesejos) {
 		this.listaDeDesejos = listaDeDesejos;
 	}
 

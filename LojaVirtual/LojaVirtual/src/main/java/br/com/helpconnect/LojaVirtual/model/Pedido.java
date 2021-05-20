@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,7 +41,12 @@ public class Pedido {
 	@JsonIgnoreProperties({"nome", "descricao", "marca", "img", "preco", "estoque", "categoria", "pedidos", "qtdPedidoProduto", "listaDesejos"})
 	private List<Produto> produtos = new ArrayList<>();
 	
-	@ManyToOne
+	/*@ManyToOne
+	@JsonIgnoreProperties("pedidos")
+	private Cliente cliente;*/
+	@OneToOne
+    @MapsId
+    @JoinColumn(name = "cliente_id")
 	@JsonIgnoreProperties("pedidos")
 	private Cliente cliente;
 

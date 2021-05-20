@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -25,7 +27,12 @@ public class ListaDeDesejos {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@ManyToOne
+	/*@ManyToOne
+	@JsonIgnoreProperties("listaDeDesejos")
+	private Cliente cliente;*/
+	@OneToOne
+    @MapsId
+    @JoinColumn(name = "cliente_id")
 	@JsonIgnoreProperties("listaDeDesejos")
 	private Cliente cliente;
 	

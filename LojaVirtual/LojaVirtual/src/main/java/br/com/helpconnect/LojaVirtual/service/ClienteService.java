@@ -114,7 +114,7 @@ public class ClienteService {
 				clienteLogin.get().setFoto(cliente.get().getFoto());
 				clienteLogin.get().setTipo(cliente.get().getTipo());
 				clienteLogin.get().setNome(cliente.get().getNome());
-				/*clienteLogin.get().setBairro(cliente.get().getBairro());
+				clienteLogin.get().setBairro(cliente.get().getBairro());
 				clienteLogin.get().setCep(cliente.get().getCep());
 				clienteLogin.get().setCidade(cliente.get().getCidade());
 				clienteLogin.get().setComplemento(cliente.get().getComplemento());
@@ -124,7 +124,11 @@ public class ClienteService {
 				clienteLogin.get().setFone(cliente.get().getFone());
 				clienteLogin.get().setId(cliente.get().getId());
 				clienteLogin.get().setNumero(cliente.get().getNumero());
-				clienteLogin.get().setPais(cliente.get().getPais());*/
+				clienteLogin.get().setPais(cliente.get().getPais());
+				clienteLogin.get().setPedidos(cliente.get().getPedidos());
+				clienteLogin.get().setListaDeDesejos(cliente.get().getListaDeDesejos());
+				/*clienteLogin.get().getPedidos().setId(cliente.get().getPedidos().getId());
+				clienteLogin.get().getListaDeDesejos().setId(cliente.get().getListaDeDesejos().getId());*/
 				
 				return clienteLogin;
 

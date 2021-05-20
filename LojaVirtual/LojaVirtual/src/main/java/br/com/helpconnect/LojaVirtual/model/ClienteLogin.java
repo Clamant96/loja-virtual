@@ -14,7 +14,7 @@ public class ClienteLogin {
 	
 	private String token;
 	
-	/*private String fone;
+	private String fone;
 	
 	private String cpf;
 	
@@ -32,11 +32,15 @@ public class ClienteLogin {
 	
 	private String estado;
 	
-	private String pais;*/
+	private String pais;
 	
 	private String foto;
 	
 	private String tipo;
+	
+	private Pedido pedidos;
+	
+	private ListaDeDesejos listaDeDesejos;
 
 	public String getUsuario() {
 		return usuario;
@@ -94,7 +98,7 @@ public class ClienteLogin {
 		this.nome = nome;
 	}
 
-	/*public String getFone() {
+	public String getFone() {
 		return fone;
 	}
 
@@ -172,7 +176,7 @@ public class ClienteLogin {
 
 	public void setPais(String pais) {
 		this.pais = pais;
-	}*/
+	}
 
 	public long getId() {
 		return id;
@@ -182,4 +186,20 @@ public class ClienteLogin {
 		this.id = id;
 	}
 
+	public Pedido getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(Pedido pedidos) {
+		this.pedidos = pedidos;
+	}
+
+	public ListaDeDesejos getListaDeDesejos() {
+		return listaDeDesejos;
+	}
+
+	public void setListaDeDesejos(ListaDeDesejos listaDeDesejos) {
+		this.listaDeDesejos = listaDeDesejos;
+	}
+	
 }
