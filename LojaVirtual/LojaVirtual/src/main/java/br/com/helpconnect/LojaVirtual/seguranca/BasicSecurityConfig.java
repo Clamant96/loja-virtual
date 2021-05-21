@@ -2,6 +2,7 @@ package br.com.helpconnect.LojaVirtual.seguranca;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -32,8 +33,16 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
+		.antMatchers("/**").permitAll()
 		.antMatchers("/clientes/logar").permitAll()
 		.antMatchers("/clientes/cadastrar").permitAll()
+		.antMatchers(HttpMethod.GET, "/clientes").permitAll()
+		.antMatchers(HttpMethod.GET, "/categorias").permitAll()
+		.antMatchers(HttpMethod.GET, "/pedidos").permitAll()
+		.antMatchers(HttpMethod.GET, "/produtos").permitAll()
+		.antMatchers(HttpMethod.GET, "/listadesejo").permitAll()
+
+		/*.antMatchers("/clientes/{id}").permitAll()
 		.antMatchers("/categorias").permitAll()
 		.antMatchers("/categorias/{id}").permitAll()
 		.antMatchers("/pedidos").permitAll()
@@ -49,7 +58,7 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/produtos/produto_lista/{id}").permitAll()
 		.antMatchers("/produtos/produto_lista/produtos/{idProduto}/listaDesejos/{idListaDeDesejo}").permitAll()
 		.antMatchers("/produtos/meuspedidos/{idPedido}").permitAll()
-		.antMatchers("/produtos/produto_pedido/produtos/{idProduto}/pedidos/{idPedido}").permitAll()
+		.antMatchers("/produtos/produto_pedido/produtos/{idProduto}/pedidos/{idPedido}").permitAll()*/
 		.anyRequest().authenticated()
 		.and().httpBasic()
 		.and().sessionManagement()
