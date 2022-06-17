@@ -1,15 +1,15 @@
 package br.com.helpconnect.LojaVirtual.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -35,7 +35,6 @@ public class Cliente {
 	@Size(max = 50)
 	private String usuario;
 	
-	/*@NotNull*/
 	@Size(max = 11)
 	private String fone;
 	
@@ -43,63 +42,49 @@ public class Cliente {
 	@Email
 	private String email;
 	
-	/*@NotNull*/
 	@CPF
 	private String cpf;
 	
 	@NotNull
 	private String senha;
 	
-	/*@NotNull*/
 	@Size(max = 100)
 	private String endereco;
 	
-	/*@NotNull*/
 	@Size(max = 5)
 	private String numero;
 	
 	@Size(max = 100)
 	private String complemento;
 	
-	/*@NotNull*/
 	@Size(max = 50)
 	private String bairro;
 	
-	/*@NotNull*/
 	@Size(max = 8)
 	private String cep;
 	
-	/*@NotNull*/
 	@Size(max = 50)
 	private String cidade;
 	
-	/*@NotNull*/
 	@Size(max = 50)
 	private String estado;
 	
-	/*@NotNull*/
 	@Size(max = 20)
 	private String pais;
 	
 	private String foto;
 	
 	private String tipo;
-	
-	/*@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-	@JsonIgnoreProperties("cliente")
-	private List<Pedido> pedidos;*/
-	@OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    @JsonIgnoreProperties("cliente")
-	private Pedido pedidos;
-	
-	/*@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-	@JsonIgnoreProperties("cliente")
-	private List<ListaDeDesejos> listaDeDesejos;*/
-	@OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    @JsonIgnoreProperties("cliente")
-	private ListaDeDesejos listaDeDesejos;
+
+	private double valorTotal;
+
+	@ManyToMany(mappedBy = "pedidos", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JsonIgnoreProperties({"pedidos", "listaDesejos"})
+	private List<Produto> pedidos = new ArrayList<>();
+
+	@ManyToMany(mappedBy = "listaDesejos", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({"pedidos", "listaDesejos"})
+	private List<Produto> listaDeDesejos = new ArrayList<>();
 
 	public long getId() {
 		return id;
@@ -221,11 +206,11 @@ public class Cliente {
 		this.pais = pais;
 	}
 
-	public Pedido getPedidos() {
+	public List<Produto> getPedidos() {
 		return pedidos;
 	}
 
-	public void setPedidos(Pedido pedidos) {
+	public void setPedidos(List<Produto> pedidos) {
 		this.pedidos = pedidos;
 	}
 
@@ -245,12 +230,20 @@ public class Cliente {
 		this.tipo = tipo;
 	}
 
-	public ListaDeDesejos getListaDeDesejos() {
+	public List<Produto> getListaDeDesejos() {
 		return listaDeDesejos;
 	}
 
-	public void setListaDeDesejos(ListaDeDesejos listaDeDesejos) {
+	public void setListaDeDesejos(List<Produto> listaDeDesejos) {
 		this.listaDeDesejos = listaDeDesejos;
+	}
+
+	public double getValorTotal() {
+		return valorTotal;
+	}
+
+	public void setValorTotal(double valorTotal) {
+		this.valorTotal = valorTotal;
 	}
 
 }

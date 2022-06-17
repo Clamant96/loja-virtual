@@ -63,8 +63,8 @@ public class Produto {
 	  joinColumns = @JoinColumn(name = "produto_id"),
 	  inverseJoinColumns = @JoinColumn(name = "pedido_id")
 	)
-	@JsonIgnoreProperties({"data", "valorTotal", "produtos", "cliente", "qtdProduto"})
-	private List<Pedido> pedidos = new ArrayList<>();
+	@JsonIgnoreProperties({"pedidos", "listaDeDesejos"})
+	private List<Cliente> pedidos = new ArrayList<>();
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(
@@ -72,8 +72,8 @@ public class Produto {
 	  joinColumns = @JoinColumn(name = "produto_id"),
 	  inverseJoinColumns = @JoinColumn(name = "lista_id")
 	)
-	@JsonIgnoreProperties({"produtos", "cliente"})
-	private List<ListaDeDesejos> listaDesejos = new ArrayList<>();
+	@JsonIgnoreProperties({"pedidos", "listaDeDesejos"})
+	private List<Cliente> listaDesejos = new ArrayList<>();
 	
 	public long getId() {
 		return id;
@@ -147,19 +147,19 @@ public class Produto {
 		this.qtdPedidoProduto = qtdPedidoProduto;
 	}
 
-	public List<Pedido> getPedidos() {
+	public List<Cliente> getPedidos() {
 		return pedidos;
 	}
 
-	public void setPedidos(List<Pedido> pedidos) {
+	public void setPedidos(List<Cliente> pedidos) {
 		this.pedidos = pedidos;
 	}
 
-	public List<ListaDeDesejos> getListaDesejos() {
+	public List<Cliente> getListaDesejos() {
 		return listaDesejos;
 	}
 
-	public void setListaDesejos(List<ListaDeDesejos> listaDesejos) {
+	public void setListaDesejos(List<Cliente> listaDesejos) {
 		this.listaDesejos = listaDesejos;
 	}
 	

@@ -6,21 +6,21 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.helpconnect.LojaVirtual.model.Cliente;
 import br.com.helpconnect.LojaVirtual.model.ListaDeDesejos;
-import br.com.helpconnect.LojaVirtual.model.Pedido;
 import br.com.helpconnect.LojaVirtual.model.Produto;
+import br.com.helpconnect.LojaVirtual.repository.ClienteRepository;
 import br.com.helpconnect.LojaVirtual.repository.ListaDeDesejosRepository;
-import br.com.helpconnect.LojaVirtual.repository.PedidoRepository;
 import br.com.helpconnect.LojaVirtual.repository.ProdutoRepository;
 
 @Service
 public class ProdutoService {
-	
-	@Autowired
-	private PedidoRepository pedidoRepository;
-	
+
 	@Autowired
 	private ProdutoRepository produtoRepository;
+
+	@Autowired
+	private ClienteRepository clienteRepository;
 	
 	@Autowired
 	private ListaDeDesejosRepository listaDeDesejoRepository;
@@ -28,36 +28,36 @@ public class ProdutoService {
 	double a = 0;
 	int posicao = 0; // aramazena a posicao do item dentro do array de lista de desejos
 	
-	public Produto compraProduto(long idProduto, long idPedido) {
+	public Produto compraProduto(long idProduto, long idCliente) {
 			
 		Optional<Produto> produtoExistente = produtoRepository.findById(idProduto);
-		Optional<Pedido> pedidoExistente = pedidoRepository.findById(idPedido);
+		Optional<Cliente> clienteExistente = clienteRepository.findById(idCliente);
 		
-		if(produtoExistente.isPresent() && pedidoExistente.isPresent() && produtoExistente.get().getEstoque() == 0) {
+		if(produtoExistente.isPresent() && clienteExistente.isPresent() && produtoExistente.get().getEstoque() == 0) {
 			/* ACRESCENTA MAIS 50 PRODUTOS AO ESTOQUE */
 			produtoExistente.get().setEstoque(50);
 			
 		}
 		
 		/* SE O 'PRODUTO' E 'PEDIDO' EXISTIREM, E SE O 'ESTOQUE' CONTEM PRODUTOS DISPONIVEIS ENTRA NA CONDICAO */
-		if(produtoExistente.isPresent() && pedidoExistente.isPresent() && produtoExistente.get().getEstoque() >= 0 && !(pedidoExistente.get().getProdutos().isEmpty())) {
+		if(produtoExistente.isPresent() && clienteExistente.isPresent() && produtoExistente.get().getEstoque() >= 0 && !(clienteExistente.get().getPedidos().isEmpty())) {
 			
 			/* ADICIONA O PRODUTO AO CARRINHO DO USUARIO */
-			produtoExistente.get().getPedidos().add(pedidoExistente.get());
+			produtoExistente.get().getPedidos().add(clienteExistente.get());
 			
-			System.out.println("Retorno: "+ pedidoExistente.get().getProdutos().contains(produtoExistente.get()));
+			System.out.println("Retorno: "+ clienteExistente.get().getPedidos().contains(produtoExistente.get()));
 			
-			System.out.println("QTD produtos "+ pedidoExistente.get().getProdutos().size());
+			System.out.println("QTD produtos "+ clienteExistente.get().getPedidos().size());
 			
 			/* ARMAZENA A QTD DE PRODUTOS */
 			int contador = 0;
 			
 			/* ARMAZENA OS IDs DOS PRODUTOS LISTADOS DENTRO DO CARRINHO DO USUARIO */
-			long[] vetor = new long[pedidoExistente.get().getProdutos().size()];
+			long[] vetor = new long[clienteExistente.get().getPedidos().size()];
 			
-			for(int i = 0; i < pedidoExistente.get().getProdutos().size(); i++) {
+			for(int i = 0; i < clienteExistente.get().getPedidos().size(); i++) {
 				
-				vetor[i] = pedidoExistente.get().getProdutos().get(i).getId();
+				vetor[i] = clienteExistente.get().getPedidos().get(i).getId();
 				
 				System.out.println("Posicao do vetor ["+ i +"] = "+ vetor[i]);
 				System.out.println("Produto ID: "+ produtoExistente.get().getId());
@@ -69,10 +69,10 @@ public class ProdutoService {
 				
 			}
 			
-			System.out.println("Valor Total a Pagar ATUAL "+ pedidoExistente.get().getValorTotal());
+			System.out.println("Valor Total a Pagar ATUAL "+ clienteExistente.get().getValorTotal());
 			
 			/* RETIRA O VALOR EXISTENTE DO CARRINHO PARA PODER SER RECALCULADO */
-			pedidoExistente.get().setValorTotal(pedidoExistente.get().getValorTotal() - (produtoExistente.get().getPreco() * contador));
+			clienteExistente.get().setValorTotal(clienteExistente.get().getValorTotal() - (produtoExistente.get().getPreco() * contador));
 			
 			/* COMPENSA ACRESCENTANDO O NOVO PRODUTO AO CARRINHO ==> O ID INFORMADO */
 			contador++;
@@ -83,30 +83,30 @@ public class ProdutoService {
 			/* DEBITA O ESTOQUE SEMPRE QUE E INSERIDO UM PRODUTO A UM CARRINHO */
 			produtoExistente.get().setEstoque(produtoExistente.get().getEstoque() - 1);
 			
-			System.out.println("Valor Total a Pagar ZERADO "+ pedidoExistente.get().getValorTotal());
+			System.out.println("Valor Total a Pagar ZERADO "+ clienteExistente.get().getValorTotal());
 			
 			/* AJUSTA O VALOR DO CARRINHO DE UM USUARIO ESPECIFICO */
-			pedidoExistente.get().setValorTotal(pedidoExistente.get().getValorTotal() + (produtoExistente.get().getPreco() * produtoExistente.get().getQtdPedidoProduto()));
+			clienteExistente.get().setValorTotal(clienteExistente.get().getValorTotal() + (produtoExistente.get().getPreco() * produtoExistente.get().getQtdPedidoProduto()));
 			
-			System.out.println("Valor Total a Pagar ATUALIZADO "+ pedidoExistente.get().getValorTotal());
+			System.out.println("Valor Total a Pagar ATUALIZADO "+ clienteExistente.get().getValorTotal());
 			
 			System.out.println("Contador: "+ contador);
 			System.out.println("QTD Produtos Comprados: "+ produtoExistente.get().getQtdPedidoProduto());
 			System.out.println("Valor Produto: "+ produtoExistente.get().getPreco());
-			System.out.println("Valor Carrinho: "+ pedidoExistente.get().getValorTotal());
+			System.out.println("Valor Carrinho: "+ clienteExistente.get().getValorTotal());
 			
 			System.out.println("IF");
-			System.out.println("ID: "+ pedidoExistente.get().getId() +" | Valor a pagar: "+ pedidoExistente.get().getValorTotal());
+			System.out.println("ID: "+ clienteExistente.get().getId() +" | Valor a pagar: "+ clienteExistente.get().getValorTotal());
 			
 			produtoRepository.save(produtoExistente.get());
-			pedidoRepository.save(pedidoExistente.get());
-			pedidoRepository.save(pedidoExistente.get()).getValorTotal();
+			clienteRepository.save(clienteExistente.get());
+			clienteRepository.save(clienteExistente.get()).getValorTotal();
 			
 			return produtoRepository.save(produtoExistente.get());
 			
-		}else if(produtoExistente.isPresent() && pedidoExistente.isPresent()) {
+		}else if(produtoExistente.isPresent() && clienteExistente.isPresent()) {
 			/* ADICIONA O PRODUTO AO CARRINHO DO USUARIO */
-			produtoExistente.get().getPedidos().add(pedidoExistente.get());
+			produtoExistente.get().getPedidos().add(clienteExistente.get());
 			
 			/* ADICIONA UM PRODUTO AO QTD PRODUTOS DENTRO DE PRODUTO */
 			produtoExistente.get().setQtdPedidoProduto(1);
@@ -114,14 +114,14 @@ public class ProdutoService {
 			produtoExistente.get().setEstoque(produtoExistente.get().getEstoque() - 1);
 			
 			/* ATUALIZA O VALOR DO CARRINHO DO USUARIO */
-			pedidoExistente.get().setValorTotal(pedidoExistente.get().getValorTotal() + (produtoExistente.get().getPreco() * produtoExistente.get().getQtdPedidoProduto()));
+			clienteExistente.get().setValorTotal(clienteExistente.get().getValorTotal() + (produtoExistente.get().getPreco() * produtoExistente.get().getQtdPedidoProduto()));
 			
 			System.out.println("ELSE");
-			System.out.println("ID: "+ pedidoExistente.get().getId() +" | Valor a pagar: "+ pedidoExistente.get().getValorTotal());
+			System.out.println("ID: "+ clienteExistente.get().getId() +" | Valor a pagar: "+ clienteExistente.get().getValorTotal());
 			
 			produtoRepository.save(produtoExistente.get());
-			pedidoRepository.save(pedidoExistente.get());
-			pedidoRepository.save(pedidoExistente.get()).getValorTotal();
+			clienteRepository.save(clienteExistente.get());
+			clienteRepository.save(clienteExistente.get()).getValorTotal();
 			
 			return produtoRepository.save(produtoExistente.get());
 			
@@ -131,14 +131,14 @@ public class ProdutoService {
 	}
 	
 	/* DELETAR OBJETOS DO PRODUTO */
-	public void deletarProduto(long idProduto, long idPedido) {
+	public void deletarProduto(long idProduto, long idCliente) {
 
 		Optional<Produto> produtoExistente = produtoRepository.findById(idProduto);
-		Optional<Pedido> pedidoExistente = pedidoRepository.findById(idPedido);
+		Optional<Cliente> clienteExistente = clienteRepository.findById(idCliente);
 		
-		if(pedidoExistente.get().getProdutos().contains(produtoExistente.get())) {
+		if(clienteExistente.get().getPedidos().contains(produtoExistente.get())) {
 			/* REMOVE O CARRINHO DO PRODUTO */
-			produtoExistente.get().getPedidos().remove(pedidoExistente.get());
+			produtoExistente.get().getPedidos().remove(clienteExistente.get());
 			
 			/* GERENCIA O ESTOQUE DEBITNADO UM PRODUTO DO ESTOQUE */
 			produtoExistente.get().setEstoque(produtoExistente.get().getEstoque() + 1);
@@ -146,11 +146,11 @@ public class ProdutoService {
 			int contador = 0;
 			
 			/* ARMAZENA OS IDs DOS PRODUTOS LISTADOS DENTRO DO CARRINHO DO USUARIO */
-			long[] vetor = new long[pedidoExistente.get().getProdutos().size()];
+			long[] vetor = new long[clienteExistente.get().getPedidos().size()];
 			
-			for(int i = 0; i < pedidoExistente.get().getProdutos().size(); i++) {
+			for(int i = 0; i < clienteExistente.get().getPedidos().size(); i++) {
 				
-				vetor[i] = pedidoExistente.get().getProdutos().get(i).getId();
+				vetor[i] = clienteExistente.get().getPedidos().get(i).getId();
 				
 				System.out.println("Posicao do vetor ["+ i +"] = "+ vetor[i]);
 				System.out.println("Produto ID: "+ produtoExistente.get().getId());
@@ -165,36 +165,36 @@ public class ProdutoService {
 			produtoExistente.get().setQtdPedidoProduto(contador - 1);
 			
 			/* AJUSTA O VALOR DO CARRINHO DE UM USUARIO ESPECIFICO */
-			pedidoExistente.get().setValorTotal(pedidoExistente.get().getValorTotal() - produtoExistente.get().getPreco());
+			clienteExistente.get().setValorTotal(clienteExistente.get().getValorTotal() - produtoExistente.get().getPreco());
 			
-			a = pedidoExistente.get().getValorTotal();
+			a = clienteExistente.get().getValorTotal();
 			a = Math.floor(a * 100) / 100;
-				pedidoExistente.get().setValorTotal(a);
+				clienteExistente.get().setValorTotal(a);
 				
-			if(pedidoExistente.get().getValorTotal() < 0) {
-				pedidoExistente.get().setValorTotal(0);
+			if(clienteExistente.get().getValorTotal() < 0) {
+				clienteExistente.get().setValorTotal(0);
 			}
 			
 			produtoRepository.save(produtoExistente.get());
-			pedidoRepository.save(pedidoExistente.get());
-			pedidoRepository.save(pedidoExistente.get()).getValorTotal();
+			clienteRepository.save(clienteExistente.get());
+			clienteRepository.save(clienteExistente.get()).getValorTotal();
 			
 		}
 		
 	}
 	
 	/* ADICIONA UM PRODUTO ESPECIFICO A LISTA DE DESEJOS DO USUARIO */
-	public Produto adicionarProdutoListaDeDesejo(long idProduto, long idListaDeDesejo) {
+	public Produto adicionarProdutoListaDeDesejo(long idProduto, long idCiente) {
 		Optional<Produto> produtoExistente = produtoRepository.findById(idProduto);
-		Optional<ListaDeDesejos> listaDeDesejoExistente = listaDeDesejoRepository.findById(idListaDeDesejo);
+		Optional<Cliente> clienteExistente = clienteRepository.findById(idCiente);
 		
 		/* CASO OS ITENS EXISTAM NA BASE DE DADOS E O PRODUTO AINDA NAO ESTEJA INCLUSO DENTRO DA LSITA DE DESEJOS */
-		if(produtoExistente.isPresent() && listaDeDesejoExistente.isPresent() && !(produtoExistente.get().getListaDesejos().contains(listaDeDesejoExistente.get()))) {
+		if(produtoExistente.isPresent() && clienteExistente.isPresent() && !(produtoExistente.get().getListaDesejos().contains(clienteExistente.get()))) {
 			// ADICIONA O PRODUTO A LISTA DE DESEJOS DO USUARIO
 			
 			System.out.println("Acessou o produto e lista por id");
 			
-			produtoExistente.get().getListaDesejos().add(listaDeDesejoExistente.get());
+			produtoExistente.get().getListaDesejos().add(clienteExistente.get());
 			
 			System.out.println("Adicionou o produto a lista");
 			
@@ -213,12 +213,12 @@ public class ProdutoService {
 	/* REMOVE UM PRODUTO ESPECIFICO DA LISTA DE DESEJOS DO USUARIO */
 	public Produto removeProdutoListaDeDesejo(long idProduto, long idListaDeDesejo) {
 		Optional<Produto> produtoExistente = produtoRepository.findById(idProduto);
-		Optional<ListaDeDesejos> listaDeDesejoExistente = listaDeDesejoRepository.findById(idListaDeDesejo);
+		Optional<ListaDeDesejos> clienteExistente = listaDeDesejoRepository.findById(idListaDeDesejo);
 		
 		/* CASO OS ITENS EXISTAM NA BASE DE DADOS E O PRODUTO AINDA NAO ESTEJA INCLUSO DENTRO DA LSITA DE DESEJOS */
-		if(produtoExistente.get().getListaDesejos().contains(listaDeDesejoExistente.get())) {
+		if(produtoExistente.get().getListaDesejos().contains(clienteExistente.get())) {
 			/* REMOVE O CARRINHO DO PRODUTO */
-			produtoExistente.get().getListaDesejos().remove(listaDeDesejoExistente.get());
+			produtoExistente.get().getListaDesejos().remove(clienteExistente.get());
 			
 			produtoRepository.save(produtoExistente.get());
 			
@@ -232,14 +232,14 @@ public class ProdutoService {
 	
 	/* PESQUISANDO POR PRODUTO ESPECIFICO EM UMA LISTA DE DESEJOS DE PRODUTOS */
 	public List<Produto> pesquisaPorIdDeProdutoNaListaDeDesejos(long idListaDeDesejo, String nome) {
-		Optional<ListaDeDesejos> listaDeDesejoExistente = listaDeDesejoRepository.findById(idListaDeDesejo);
+		Optional<ListaDeDesejos> clienteExistente = listaDeDesejoRepository.findById(idListaDeDesejo);
 		
 		// ARMAZENA OS IDs DOS PRODUTOS LISTADOS DENTRO DO CARRINHO DO USUARIO
-		long[] vetor = new long[listaDeDesejoExistente.get().getProdutos().size()];
+		long[] vetor = new long[clienteExistente.get().getProdutos().size()];
 		
 		for(int i = 0; i < vetor.length; i++) {
 			
-			if(listaDeDesejoExistente.get().getProdutos().get(i).getNome().contains(nome)) {
+			if(clienteExistente.get().getProdutos().get(i).getNome().contains(nome)) {
 				
 				return produtoRepository.findAllByNomeContainingIgnoreCase(nome);	
 			}
@@ -252,12 +252,12 @@ public class ProdutoService {
 	
 	/* PESQUISANDO POR PRODUTO ESPECIFICO EM UMA LISTA DE DESEJOS DE PRODUTOS */
 	public List<Produto> pesquisaPorProdutoNaListaDeDesejos(long idListaDeDesejo) {
-		Optional<ListaDeDesejos> listaDeDesejoExistente = listaDeDesejoRepository.findById(idListaDeDesejo);
+		Optional<ListaDeDesejos> clienteExistente = listaDeDesejoRepository.findById(idListaDeDesejo);
 		
-		if(listaDeDesejoExistente.isPresent()) {
-			listaDeDesejoExistente.get().getProdutos();
+		if(clienteExistente.isPresent()) {
+			clienteExistente.get().getProdutos();
 			
-			return listaDeDesejoRepository.save(listaDeDesejoExistente.get()).getProdutos();
+			return listaDeDesejoRepository.save(clienteExistente.get()).getProdutos();
 			
 		}
 		
@@ -266,13 +266,13 @@ public class ProdutoService {
 	}
 	
 	/* PESQUISANDO POR PRODUTO ESPECIFICO EM UMA LISTA DE DESEJOS DE PRODUTOS */
-	public List<Produto> pesquisaPorProdutoNoCarrinho(long idPedido) {
-		Optional<Pedido> pedidoExistente = pedidoRepository.findById(idPedido);
+	public List<Produto> pesquisaPorProdutoNoCarrinho(long idCliente) {
+		Optional<Cliente> clienteExistente = clienteRepository.findById(idCliente);
 		
-		if(pedidoExistente.isPresent()) {
-			pedidoExistente.get().getProdutos();
+		if(clienteExistente.isPresent()) {
+			clienteExistente.get().getPedidos();
 			
-			return pedidoRepository.save(pedidoExistente.get()).getProdutos();
+			return clienteRepository.save(clienteExistente.get()).getPedidos();
 			
 		}
 		

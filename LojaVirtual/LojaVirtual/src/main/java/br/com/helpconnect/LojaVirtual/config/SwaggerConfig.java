@@ -32,7 +32,7 @@ public class SwaggerConfig {
 		return new ApiInfoBuilder()
 			.title("API - Loja Virtual")
 			.description("API para compor aplicações WEB Spring/Java/MySQL")
-			.version("1.0")
+			.version("2.0")
 			.contact(contact())
 			.build();
 		
@@ -41,7 +41,7 @@ public class SwaggerConfig {
 	private Contact contact() {
 		return new Contact("Kevin Alec Neri Lazzarotto",
 			"https://github.com/Clamant96",
-			"Estudante em ADS | Desenvolvedor Web Java Junior Full Stack");
+			"ADS | Desenvolvedor Web Java Junior Full Stack");
 		
 	}
 

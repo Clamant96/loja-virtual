@@ -1,5 +1,7 @@
 package br.com.helpconnect.LojaVirtual.model;
 
+import java.util.List;
+
 public class ClienteLogin {
 	
 	private long id;
@@ -38,9 +40,9 @@ public class ClienteLogin {
 	
 	private String tipo;
 	
-	private Pedido pedidos;
+	private List<Produto> pedidos;
 	
-	private ListaDeDesejos listaDeDesejos;
+	private List<Produto> listaDeDesejos;
 
 	public String getUsuario() {
 		return usuario;
@@ -186,19 +188,19 @@ public class ClienteLogin {
 		this.id = id;
 	}
 
-	public Pedido getPedidos() {
+	public List<Produto> getPedidos() {
 		return pedidos;
 	}
 
-	public void setPedidos(Pedido pedidos) {
+	public void setPedidos(List<Produto> pedidos) {
 		this.pedidos = pedidos;
 	}
 
-	public ListaDeDesejos getListaDeDesejos() {
+	public List<Produto> getListaDeDesejos() {
 		return listaDeDesejos;
 	}
 
-	public void setListaDeDesejos(ListaDeDesejos listaDeDesejos) {
+	public void setListaDeDesejos(List<Produto> listaDeDesejos) {
 		this.listaDeDesejos = listaDeDesejos;
 	}
 	

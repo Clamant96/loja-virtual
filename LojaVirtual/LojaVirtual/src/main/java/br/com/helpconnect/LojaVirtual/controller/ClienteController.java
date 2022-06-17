@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.helpconnect.LojaVirtual.model.Cliente;
 import br.com.helpconnect.LojaVirtual.model.ClienteLogin;
+import br.com.helpconnect.LojaVirtual.model.Produto;
 import br.com.helpconnect.LojaVirtual.repository.ClienteRepository;
 import br.com.helpconnect.LojaVirtual.service.ClienteService;
+import br.com.helpconnect.LojaVirtual.service.ProdutoService;
 
 @RestController
 @RequestMapping("/clientes")
@@ -30,7 +32,10 @@ public class ClienteController {
 	private ClienteRepository repository;
 	
 	@Autowired
-	private ClienteService service;
+	private ClienteService clienteService;
+
+	@Autowired
+	private ProdutoService produtoService;
 	
 	@GetMapping
 	public ResponseEntity<List<Cliente>> findAllByCliente() {
@@ -61,7 +66,7 @@ public class ClienteController {
 	/* PARA LOGARMOS NO SISITEMA TRABALHAMOS COM A CLASSE 'UserLogin' */
 	@PostMapping("/logar")
 	public ResponseEntity<ClienteLogin> Autentication(@RequestBody Optional<ClienteLogin> user) {
-		return service.Logar(user).map(resp -> ResponseEntity.ok(resp))
+		return clienteService.Logar(user).map(resp -> ResponseEntity.ok(resp))
 				/* CASO SEU USUARIO SEJA INVALIDO VOCE RECEBERA UM ERRO DE NAO AUTORIZADO */
 				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}
@@ -69,7 +74,7 @@ public class ClienteController {
 	/* CHAMA O METODO DE CADASTRAR USUARIOS QUE E RESPONSAVEL POR VERIFICAR SE O USUARIO INSERIDO JA SE ENCONTRA NA BASE DE DADOS, CODIFICAR A SENHA INSERIDA E SALVAR OS DADOS CADASTRADO NA BASE DE DADOS */
 	@PostMapping("/cadastrar")
 	public ResponseEntity<Cliente> Post(@RequestBody Cliente usuario) {
-		Optional<Cliente> user = service.CadastrarCliente(usuario);
+		Optional<Cliente> user = clienteService.CadastrarCliente(usuario);
 		
 		try {
 			return ResponseEntity.ok(user.get());
@@ -85,6 +90,18 @@ public class ClienteController {
 	public ResponseEntity<Cliente> putCliente(@RequestBody Cliente cliente) {
 		
 		return ResponseEntity.ok(repository.save(cliente));
+	}
+
+	@DeleteMapping("/produto_lista/produtos/{idProduto}/listaDesejos/{idCliente}")
+	public ResponseEntity<Produto> removeProdutoListaDeDesejos(@PathVariable long idProduto, @PathVariable long idCliente) {
+		
+		return ResponseEntity.ok(produtoService.removeProdutoListaDeDesejo(idProduto, idCliente));
+	}
+
+	@DeleteMapping("/produto_pedido/produtos/{idProduto}/pedidos/{idCliente}")
+	public void putProduto(@PathVariable long idProduto, @PathVariable long idCliente) {
+		
+		produtoService.deletarProduto(idProduto, idCliente);
 	}
 	
 	@DeleteMapping("/{id}")
