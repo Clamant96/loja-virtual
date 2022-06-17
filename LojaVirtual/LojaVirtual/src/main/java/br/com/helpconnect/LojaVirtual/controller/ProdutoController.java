@@ -62,13 +62,15 @@ public class ProdutoController {
 		return ResponseEntity.ok(repository.save(produto));
 	}
 
-	@PutMapping("/produto_pedido/produtos/{idProduto}/pedidos/{idPedido}")
+	@GetMapping("/produto_pedido/produtos/{idProduto}/pedidos/{idCliente}")
 	public ResponseEntity<Produto> putProduto(@PathVariable long idProduto, @PathVariable long idCliente) {
 		
+		System.out.println("CHEGUEI AQUI ::::::::");
+
 		return ResponseEntity.ok(service.compraProduto(idProduto, idCliente));
 	}
 	
-	@PutMapping("/produto_lista/produtos/{idProduto}/listaDesejos/{idCliente}")
+	@GetMapping("/produto_lista/produtos/{idProduto}/listaDesejos/{idCliente}")
 	public ResponseEntity<Produto> adicionaProdutoListaDeDesejos(@PathVariable long idProduto, @PathVariable long idCliente) {
 		
 		return ResponseEntity.ok(service.adicionarProdutoListaDeDesejo(idProduto, idCliente));

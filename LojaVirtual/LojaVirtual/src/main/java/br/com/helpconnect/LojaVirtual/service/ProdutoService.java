@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.helpconnect.LojaVirtual.model.Cliente;
-import br.com.helpconnect.LojaVirtual.model.ListaDeDesejos;
 import br.com.helpconnect.LojaVirtual.model.Produto;
 import br.com.helpconnect.LojaVirtual.repository.ClienteRepository;
-import br.com.helpconnect.LojaVirtual.repository.ListaDeDesejosRepository;
 import br.com.helpconnect.LojaVirtual.repository.ProdutoRepository;
 
 @Service
@@ -21,9 +19,6 @@ public class ProdutoService {
 
 	@Autowired
 	private ClienteRepository clienteRepository;
-	
-	@Autowired
-	private ListaDeDesejosRepository listaDeDesejoRepository;
 	
 	double a = 0;
 	int posicao = 0; // aramazena a posicao do item dentro do array de lista de desejos
@@ -213,7 +208,7 @@ public class ProdutoService {
 	/* REMOVE UM PRODUTO ESPECIFICO DA LISTA DE DESEJOS DO USUARIO */
 	public Produto removeProdutoListaDeDesejo(long idProduto, long idListaDeDesejo) {
 		Optional<Produto> produtoExistente = produtoRepository.findById(idProduto);
-		Optional<ListaDeDesejos> clienteExistente = listaDeDesejoRepository.findById(idListaDeDesejo);
+		Optional<Cliente> clienteExistente = clienteRepository.findById(idListaDeDesejo);
 		
 		/* CASO OS ITENS EXISTAM NA BASE DE DADOS E O PRODUTO AINDA NAO ESTEJA INCLUSO DENTRO DA LSITA DE DESEJOS */
 		if(produtoExistente.get().getListaDesejos().contains(clienteExistente.get())) {
@@ -232,14 +227,14 @@ public class ProdutoService {
 	
 	/* PESQUISANDO POR PRODUTO ESPECIFICO EM UMA LISTA DE DESEJOS DE PRODUTOS */
 	public List<Produto> pesquisaPorIdDeProdutoNaListaDeDesejos(long idListaDeDesejo, String nome) {
-		Optional<ListaDeDesejos> clienteExistente = listaDeDesejoRepository.findById(idListaDeDesejo);
+		Optional<Cliente> clienteExistente = clienteRepository.findById(idListaDeDesejo);
 		
 		// ARMAZENA OS IDs DOS PRODUTOS LISTADOS DENTRO DO CARRINHO DO USUARIO
-		long[] vetor = new long[clienteExistente.get().getProdutos().size()];
+		long[] vetor = new long[clienteExistente.get().getPedidos().size()];
 		
 		for(int i = 0; i < vetor.length; i++) {
 			
-			if(clienteExistente.get().getProdutos().get(i).getNome().contains(nome)) {
+			if(clienteExistente.get().getPedidos().get(i).getNome().contains(nome)) {
 				
 				return produtoRepository.findAllByNomeContainingIgnoreCase(nome);	
 			}
@@ -252,12 +247,12 @@ public class ProdutoService {
 	
 	/* PESQUISANDO POR PRODUTO ESPECIFICO EM UMA LISTA DE DESEJOS DE PRODUTOS */
 	public List<Produto> pesquisaPorProdutoNaListaDeDesejos(long idListaDeDesejo) {
-		Optional<ListaDeDesejos> clienteExistente = listaDeDesejoRepository.findById(idListaDeDesejo);
+		Optional<Cliente> clienteExistente = clienteRepository.findById(idListaDeDesejo);
 		
 		if(clienteExistente.isPresent()) {
-			clienteExistente.get().getProdutos();
+			clienteExistente.get().getPedidos();
 			
-			return listaDeDesejoRepository.save(clienteExistente.get()).getProdutos();
+			return clienteRepository.save(clienteExistente.get()).getPedidos();
 			
 		}
 		
