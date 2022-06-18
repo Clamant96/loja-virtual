@@ -46,9 +46,21 @@ public class ClienteController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Cliente> findByIdCliente(@PathVariable long id) {
 		
-		return repository.findById(id)
+		/*return repository.findById(id)
 				.map(resp -> ResponseEntity.ok(resp))
-				.orElse(ResponseEntity.notFound().build());
+				.orElse(ResponseEntity.notFound().build());*/
+
+		Optional<Cliente> cliente = repository.findById(id);
+
+		cliente.get().setPedidos(produtoService.retirraDuplicidadeCarrinho(cliente));
+
+		try {
+			return ResponseEntity.ok(cliente.get());
+			
+		}catch(Exception e) {
+			return ResponseEntity.badRequest().build();
+			
+		}
 	}
 	
 	/* PARA LOGARMOS NO SISITEMA TRABALHAMOS COM A CLASSE 'UserLogin' */
