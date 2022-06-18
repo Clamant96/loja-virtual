@@ -51,18 +51,6 @@ public class ClienteController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 	
-	/*@PostMapping
-	public ResponseEntity<Cliente> postCliente(@RequestBody Cliente cliente) {
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(cliente));
-	}*/
-	
-	/*@PostMapping
-	public ResponseEntity<Cliente> postCliente(@RequestBody Cliente cliente) {
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarCliente(cliente));
-	}*/
-	
 	/* PARA LOGARMOS NO SISITEMA TRABALHAMOS COM A CLASSE 'UserLogin' */
 	@PostMapping("/logar")
 	public ResponseEntity<ClienteLogin> Autentication(@RequestBody Optional<ClienteLogin> user) {
@@ -85,6 +73,20 @@ public class ClienteController {
 		}
 		
 	}
+
+	@PutMapping("/atualizar")
+	public ResponseEntity<Cliente> updateUsuario(@RequestBody Cliente cliente) {
+		Optional<Cliente> user = clienteService.atualizarCliente(cliente);
+		
+		try {
+			return ResponseEntity.ok(user.get());
+			
+		}catch(Exception e) {
+			return ResponseEntity.badRequest().build();
+			
+		}
+		
+	}
 	
 	@PutMapping
 	public ResponseEntity<Cliente> putCliente(@RequestBody Cliente cliente) {
@@ -92,16 +94,16 @@ public class ClienteController {
 		return ResponseEntity.ok(repository.save(cliente));
 	}
 
-	@DeleteMapping("/produto_lista/produtos/{idProduto}/listaDesejos/{idCliente}")
+	@GetMapping("/produto_lista/produtos/{idProduto}/listaDesejos/{idCliente}")
 	public ResponseEntity<Produto> removeProdutoListaDeDesejos(@PathVariable long idProduto, @PathVariable long idCliente) {
 		
 		return ResponseEntity.ok(produtoService.removeProdutoListaDeDesejo(idProduto, idCliente));
 	}
 
-	@DeleteMapping("/produto_pedido/produtos/{idProduto}/pedidos/{idCliente}")
-	public void putProduto(@PathVariable long idProduto, @PathVariable long idCliente) {
+	@GetMapping("/produto_pedido/produtos/{idProduto}/pedidos/{idCliente}")
+	public ResponseEntity<Produto> putProduto(@PathVariable long idProduto, @PathVariable long idCliente) {
 		
-		produtoService.deletarProduto(idProduto, idCliente);
+		return ResponseEntity.ok(produtoService.deletarProduto(idProduto, idCliente));
 	}
 	
 	@DeleteMapping("/{id}")

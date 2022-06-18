@@ -64,8 +64,6 @@ public class ProdutoController {
 
 	@GetMapping("/produto_pedido/produtos/{idProduto}/pedidos/{idCliente}")
 	public ResponseEntity<Produto> putProduto(@PathVariable long idProduto, @PathVariable long idCliente) {
-		
-		System.out.println("CHEGUEI AQUI ::::::::");
 
 		return ResponseEntity.ok(service.compraProduto(idProduto, idCliente));
 	}
