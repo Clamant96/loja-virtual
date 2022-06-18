@@ -1,5 +1,7 @@
 package br.com.helpconnect.LojaVirtual.controller;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,12 +47,13 @@ public class ClienteController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Cliente> findByIdCliente(@PathVariable long id) {
-		
-		/*return repository.findById(id)
-				.map(resp -> ResponseEntity.ok(resp))
-				.orElse(ResponseEntity.notFound().build());*/
 
 		Optional<Cliente> cliente = repository.findById(id);
+
+		// AJUSTA VALOR CARRINHO
+		double total = cliente.get().getValorTotal();
+		NumberFormat formatter = new DecimalFormat("#0.00");
+		cliente.get().setValorTotal(Double.parseDouble(formatter.format(total).replace(",", ".")));
 
 		cliente.get().setPedidos(produtoService.retirraDuplicidadeCarrinho(cliente));
 

@@ -147,63 +147,6 @@ public class ProdutoService {
 
 		return produtos;
 	}
-	
-	/* DELETAR OBJETOS DO PRODUTO */
-	/*public Produto deletarProduto(long idProduto, long idCliente) {
-
-		Optional<Produto> produtoExistente = produtoRepository.findById(idProduto);
-		Optional<Cliente> clienteExistente = clienteRepository.findById(idCliente);
-		
-		if(clienteExistente.get().getPedidos().contains(produtoExistente.get())) {
-			// REMOVE O CARRINHO DO PRODUTO 
-			produtoExistente.get().getPedidos().remove(clienteExistente.get());
-			
-			// GERENCIA O ESTOQUE DEBITNADO UM PRODUTO DO ESTOQUE 
-			produtoExistente.get().setEstoque(produtoExistente.get().getEstoque() + 1);
-			
-			int contador = 0;
-			
-			// ARMAZENA OS IDs DOS PRODUTOS LISTADOS DENTRO DO CARRINHO DO USUARIO 
-			long[] vetor = new long[clienteExistente.get().getPedidos().size()];
-			
-			for(int i = 0; i < clienteExistente.get().getPedidos().size(); i++) {
-				
-				vetor[i] = clienteExistente.get().getPedidos().get(i).getId();
-				
-				System.out.println("Posicao do vetor ["+ i +"] = "+ vetor[i]);
-				System.out.println("Produto ID: "+ produtoExistente.get().getId());
-				
-				if(vetor[i] == produtoExistente.get().getId()) {
-					contador++;
-					
-				}
-				
-			}
-			
-			produtoExistente.get().setQtdPedidoProduto(contador - 1);
-			
-			// AJUSTA O VALOR DO CARRINHO DE UM USUARIO ESPECIFICO 
-			clienteExistente.get().setValorTotal(clienteExistente.get().getValorTotal() - produtoExistente.get().getPreco());
-			
-			a = clienteExistente.get().getValorTotal();
-			a = Math.floor(a * 100) / 100;
-				clienteExistente.get().setValorTotal(a);
-				
-			if(clienteExistente.get().getValorTotal() < 0) {
-				clienteExistente.get().setValorTotal(0);
-			}
-			
-			produtoRepository.save(produtoExistente.get());
-			clienteRepository.save(clienteExistente.get());
-			clienteRepository.save(clienteExistente.get()).getValorTotal();
-			
-			return produtoRepository.save(produtoExistente.get());
-		}
-		
-		return null;
-	}*/
-
-	/* ===================================== */
 
 	public Produto deletarProduto(long idProduto, long idCliente) {
 			
