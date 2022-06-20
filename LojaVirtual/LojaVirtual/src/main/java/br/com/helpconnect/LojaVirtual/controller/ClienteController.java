@@ -91,6 +91,7 @@ public class ClienteController {
 
 	@PutMapping("/atualizar")
 	public ResponseEntity<Cliente> updateUsuario(@RequestBody Cliente cliente) {
+
 		Optional<Cliente> user = clienteService.atualizarCliente(cliente);
 		
 		try {
