@@ -1,5 +1,6 @@
 package br.com.helpconnect.LojaVirtual.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,6 +15,8 @@ import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -26,11 +29,18 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import br.com.helpconnect.LojaVirtual.model.Cliente;
+import br.com.helpconnect.LojaVirtual.model.Compras;
 import br.com.helpconnect.LojaVirtual.model.Correio;
 import br.com.helpconnect.LojaVirtual.model.EnderecoEntrega;
+import br.com.helpconnect.LojaVirtual.model.Produto;
+import br.com.helpconnect.LojaVirtual.repository.CompraRepository;
 
 @Service
 public class CorreioService {
+	
+	@Autowired
+	private CompraRepository compraRepository;
 
 	// REFERENCIA
 	// https://www.guj.com.br/t/webservice-cliente-calculo-de-frete-correios/196814
@@ -155,6 +165,52 @@ public class CorreioService {
 		EnderecoEntrega result = restTemplate.getForObject(uri, EnderecoEntrega.class);
 		
 		return result;
+	}
+	
+	public double calculaFreteDeProdutos(List<Produto> produtos, String codProduto, String cep) {
+		
+		Correio correio = new Correio();
+		
+		double memoria = 0.0;
+		
+		for(Produto p : produtos) {
+			correio.setnCdEmpresa("");
+	        correio.setsDsSenha("");
+	        correio.setnCdServico(codProduto);
+	        correio.setsCepOrigem("06029000");
+	        correio.setsCepDestino(cep);
+	        correio.setnVlPeso(Double.toString((p.getPeso() * p.getQtdPedidoProduto())));
+	        correio.setnCdFormato("1");
+	        correio.setnVlComprimento(Double.toString((p.getComprimento() * p.getQtdPedidoProduto())));
+	        correio.setnVlAltura(Double.toString((p.getAltura() * p.getQtdPedidoProduto())));
+	        correio.setnVlLargura(Double.toString((p.getLargura() * p.getQtdPedidoProduto())));
+	        correio.setnVlDiametro("0");
+	        correio.setsCdMaoPropria("s");
+	        correio.setnVlValorDeclarado(Double.toString((p.getPreco() * p.getQtdPedidoProduto())));
+	        correio.setsCdAvisoRecebimento("s");
+	        correio.setStrRetorno("xml");
+	        
+	        memoria = memoria + Double.parseDouble(CalculoFrete(correio).replace(",", "."));
+	        
+		}
+		
+		return memoria;
+	}
+	
+	public boolean InsereFrete(long idCompra, double frete) {
+		try {
+			Optional<Compras> comprasExistente = compraRepository.findById(idCompra);
+			
+			comprasExistente.get().setValorTotal(comprasExistente.get().getValorTotal() + frete);
+			
+			compraRepository.save(comprasExistente.get());
+			
+			return true;
+		}catch(Exception erro) {
+			
+			return false;
+		}
+		
 	}
 	
 }

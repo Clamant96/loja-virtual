@@ -63,7 +63,7 @@ public class Produto {
 	  joinColumns = @JoinColumn(name = "produto_id"),
 	  inverseJoinColumns = @JoinColumn(name = "pedido_id")
 	)
-	@JsonIgnoreProperties({"pedidos", "listaDeDesejos"})
+	@JsonIgnoreProperties({"pedidos", "listaDeDesejos", "compras", "meuPedido"})
 	private List<Cliente> pedidos = new ArrayList<>();
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -74,6 +74,27 @@ public class Produto {
 	)
 	@JsonIgnoreProperties({"pedidos", "listaDeDesejos"})
 	private List<Cliente> listaDesejos = new ArrayList<>();
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(
+	  name = "produto_compra",
+	  joinColumns = @JoinColumn(name = "produto_id"),
+	  inverseJoinColumns = @JoinColumn(name = "compra_id")
+	)
+	@JsonIgnoreProperties({"meuPedido"})
+	private List<Compras> compra = new ArrayList<>();
+	
+	@NotNull
+	private double peso;
+	
+	@NotNull
+	private double comprimento;
+	
+	@NotNull
+	private double altura;
+	
+	@NotNull
+	private double largura;
 	
 	public long getId() {
 		return id;
@@ -161,6 +182,46 @@ public class Produto {
 
 	public void setListaDesejos(List<Cliente> listaDesejos) {
 		this.listaDesejos = listaDesejos;
+	}
+
+	public double getPeso() {
+		return peso;
+	}
+
+	public void setPeso(double peso) {
+		this.peso = peso;
+	}
+
+	public double getComprimento() {
+		return comprimento;
+	}
+
+	public void setComprimento(double comprimento) {
+		this.comprimento = comprimento;
+	}
+
+	public double getAltura() {
+		return altura;
+	}
+
+	public void setAltura(double altura) {
+		this.altura = altura;
+	}
+
+	public double getLargura() {
+		return largura;
+	}
+
+	public void setLargura(double largura) {
+		this.largura = largura;
+	}
+
+	public List<Compras> getCompra() {
+		return compra;
+	}
+
+	public void setCompra(List<Compras> compra) {
+		this.compra = compra;
 	}
 	
 }

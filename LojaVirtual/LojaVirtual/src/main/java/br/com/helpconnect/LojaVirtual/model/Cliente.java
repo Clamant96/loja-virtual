@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -79,12 +80,16 @@ public class Cliente {
 	private double valorTotal;
 
 	@ManyToMany(mappedBy = "pedidos", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JsonIgnoreProperties({"pedidos", "listaDesejos"})
+	@JsonIgnoreProperties({"pedidos", "listaDesejos", "compra"})
 	private List<Produto> pedidos = new ArrayList<>();
 
 	@ManyToMany(mappedBy = "listaDesejos", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JsonIgnoreProperties({"pedidos", "listaDesejos"})
+	@JsonIgnoreProperties({"pedidos", "listaDesejos", "compra"})
 	private List<Produto> listaDeDesejos = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties("cliente")
+	private List<Compras> compras;
 
 	public long getId() {
 		return id;
@@ -246,4 +251,12 @@ public class Cliente {
 		this.valorTotal = valorTotal;
 	}
 
+	public List<Compras> getCompras() {
+		return compras;
+	}
+
+	public void setCompras(List<Compras> compras) {
+		this.compras = compras;
+	}
+	
 }
