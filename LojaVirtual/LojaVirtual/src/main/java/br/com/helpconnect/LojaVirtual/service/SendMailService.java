@@ -116,6 +116,16 @@ public class SendMailService {
 			
 			content = content.replaceAll("PEDIDOCOMPRA", memoriaItensCompra);
 			
+			if(compra.getStatus().equals("Pedido realizado")) {
+				content = content.replaceAll("REALIZARPAGAMENTO", "http://localhost:8080/compras/pagar-compra/"+ compra.getId());
+				
+			}else {
+				content = content.replaceAll("<a href=\"REALIZARPAGAMENTO\" class=\"botao\" >\r\n"
+						+ "                      Realizar pagamento\r\n"
+						+ "                    </a>", "");
+				
+			}
+			
 			return content;
 	        
 		} catch (FileNotFoundException e) {

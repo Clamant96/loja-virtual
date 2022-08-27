@@ -122,6 +122,22 @@ public class CompraController {
 		return ResponseEntity.ok(retorno);
 	}
 	
+	@GetMapping("/pagar-compra/{id}")
+	public String pagarCompra(@PathVariable("id") long id) {
+		
+		Optional<Compras> compraExistente = repository.findById(id);
+		
+		if(compraExistente.get().getStatus().equals("Pedido realizado")) {
+			compraExistente.get().setStatus("Pagamento realizado");
+			
+		}
+		
+		repository.save(compraExistente.get());
+		sendMailService.sendMail(compraExistente.get());
+		
+		return "Pagamento realizado";
+	}
+	
 	@GetMapping("/reescrever-email/{id}")
 	public ResponseEntity<String> lerArquivo(@PathVariable("id") long id) {
 		
