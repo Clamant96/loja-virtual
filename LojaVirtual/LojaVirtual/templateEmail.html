@@ -1,0 +1,309 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Amaranth:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Vollkorn:wght@400;500;600;700;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Amaranth:wght@400;700&display=swap');
+
+    * {
+      background-color: #ffffff;
+
+    }
+
+    .p-titulo {
+      font-family: 'Amaranth', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+
+      padding: 0.5% 2%;
+      margin-top: 0% !important;
+      margin-bottom: 1% !important;
+
+      text-align: left;
+      
+      color: #212529;
+    }
+
+    .header {
+      width: 100%;
+      height: auto;
+
+      display: flex !important;
+      align-items: flex-end !important;
+      justify-content: space-between !important;
+
+    }
+
+    .header .info-pedido {
+      width: 100%;
+      height: auto;
+
+      text-align: right;
+
+      font-size: 0.8rem !important;
+      font-weight: 600 !important;
+      font-family: 'Montserrat', sans-serif !important;
+
+      color: #4e5461 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+
+    }
+
+    .header .info-pedido span {
+      margin-bottom: 1%;
+
+      font-size: 1.5rem !important;
+      font-weight: 800 !important;
+      font-family: 'Montserrat', sans-serif !important;
+
+      color: #ff5d01 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      
+    }
+
+    .table {
+      background-color: #ffffff; 
+      
+      width: 100%;
+      height: auto; 
+      
+      overflow-x: hidden;
+      
+    }
+
+    .img-banner {
+      width: 100%;
+      height: 7vh;
+
+      background-image: url(https://i.imgur.com/ySu1Rs6.png);
+      background-size: 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+
+    }
+
+    .nome-usuario {
+      font-size: 1.5rem !important;
+      font-weight: 700 !important;
+      font-family: 'Montserrat', sans-serif !important;
+      
+      color: #4e5461 !important;
+
+      padding: 0 !important;
+
+      margin-bottom: 10px !important;
+
+    }
+
+    .descrisao {
+      font-size:0.8rem !important;
+      font-weight: 700 !important;
+      font-family: 'Montserrat', sans-serif !important;
+      
+      color: #4e5461 !important;
+
+      margin-bottom: 2.5% !important;
+
+      padding: 0 !important;
+
+    }
+
+    .tabela {
+      width: 100%;  
+      border-collapse: collapse; 
+      border:1px solid #ffffff;
+      
+    }
+
+    .img-banner-footer {
+      width: 44.7vw;
+      height: 15vh;
+
+      background-image: url(https://i.imgur.com/ySu1Rs6.png);
+      background-size: 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+
+    }
+
+    .th {
+      font-size:0.8rem !important;
+      font-weight: 600 !important;
+      font-family: 'Montserrat', sans-serif !important;
+      
+      color: #ff5d01 !important;
+
+      margin-bottom: 2.5% !important;
+
+      padding: 0.5% !important;
+
+      border:1px solid #CDCDCD;
+
+    }
+
+    .tb {
+      font-size:0.8rem !important;
+      font-weight: 500 !important;
+      font-family: 'Montserrat', sans-serif !important;
+      
+      color: #4e5461 !important;
+
+      margin-bottom: 2.5% !important;
+
+      padding: 1% !important;
+
+      border:1px solid #CDCDCD;
+
+    }
+
+    .pedidos-compra {
+      font-size:0.8rem !important;
+      font-weight: 700 !important;
+      font-family: 'Montserrat', sans-serif !important;
+      
+      color: #4e5461 !important;
+
+    }
+
+    img {
+      width: 100px !important;
+      height: auto !important;
+
+    }
+
+    .botao {
+      text-decoration: none;
+
+      width: 14.9% !important;
+      height: auto !important;
+
+      background-color: #4480c1;
+      background-image: linear-gradient(#4480c1 , #032a63);
+
+      border-radius: 5px;
+      border: none;
+
+      box-shadow: 0px 3px 5px -5px #262626;
+
+      font-size: 14px !important;
+      font-weight: 700 !important;
+      font-family: 'Montserrat', sans-serif !important;
+
+      color: #f1f1f1 !important;
+
+      text-transform: uppercase !important;
+
+      text-align: center !important;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 1.5%;
+    }
+
+  </style>
+</head>
+
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+  <table class="table" align="center">
+    <tr>
+      <td>
+        <table class="table" align="center">
+          <tr>
+            <td align="center">
+
+              <table class="table" border="0" width="100%" id="table1" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td>
+                    <p class="p-titulo">HelpConnect</p>
+                    <div class="header">
+                      
+                      <p class="info-pedido">
+                        Informações sobre o pedido:
+                        <span>
+                          NUMPEDIDO
+                        </span>
+                      </p>
+                    </div>
+                    
+                    <div class="img-banner"></div>
+
+                    <hr style="border: 1px solid #CDCDCD;" width="100%" size="1" noshade="" align="center">
+
+                    <p class="nome-usuario">
+                      Olá, NOMEUSUARIO!
+                    </p>
+                    <p class="descrisao">
+                      Confira as últimas atualizações de seu pedido, número: NUMPEDIDO.
+                    </p>
+
+                    <table class="tabela" cellspacing="0" cellpadding="0">
+                      <tbody>
+
+                        <tr>
+                          <th class="th" align="center">
+                            <b>Data</b>
+                          </th>
+                          <th class="th" align="center">
+                            <b>Situação</b>
+                          </th>
+                        </tr>
+
+                        <tr style="border-top: 1px solid #bbbbbb">
+                          <td class="tb" rowspan="1" align="center">
+                            DATAATUAL
+                          </td>
+                          <td class="tb" rowspan="1" align="center">
+                            STATUSPEDIDO
+                          </td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+
+                    <p class="pedidos-compra">
+                      PEDIDOCOMPRA
+                    </p>
+
+                    <a href="REALIZARPAGAMENTO" class="botao" >
+                      Realizar pagamento
+                    </a>
+                    
+                    <br>
+                  </td>
+                </tr>
+              </table>
+
+              <span style="font-size: 16px; font-family:Arial;"><b>Obrigado!</b></span><br>
+              <span style="font-size:13px; font-family:Arial;">
+                HelpConnect - o seu e-commerce em primeiro lugar.
+              </span>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <table align="center">
+          <tr>
+            <td>
+              <div class="img-banner-footer"></div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>

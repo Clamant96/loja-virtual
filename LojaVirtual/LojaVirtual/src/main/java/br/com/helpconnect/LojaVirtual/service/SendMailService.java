@@ -112,6 +112,8 @@ public class SendMailService {
 			
 			for(Produto p : compra.getMeuPedido()) {
 				memoriaItensCompra = memoriaItensCompra + p.getNome() +" x"+ p.getQtdPedidoProduto() +"<br/>";
+				memoriaItensCompra = memoriaItensCompra + RenderizaImagemPedido(p);
+				
 			}
 			
 			content = content.replaceAll("PEDIDOCOMPRA", memoriaItensCompra);
@@ -140,6 +142,14 @@ public class SendMailService {
 			return null;
 		}
 		
+	}
+	
+	public String RenderizaImagemPedido(Produto produto) {
+		String retorno = "<div class=\"img\">\r\n"
+				+ "                        <img src="+ produto.getImg() +" alt="+ produto.getNome() +" />\r\n"
+				+ "                      </div>";
+		
+		return retorno;
 	}
 	
 }
