@@ -39,12 +39,6 @@ public class CorreioController {
 		return ResponseEntity.ok(new EnderecoEntrega());
 	}
 	
-	/*@GetMapping("/insere-frete-compra/idCompra/{idCompra}/frete/{frete}")
-	public ResponseEntity<Compras> insereFreteNaCompra(@PathVariable("idCompra") long idCompra, @PathVariable("frete") double frete) {
-		
-		return ResponseEntity.ok(correioService.InsereFrete(idCompra, frete));
-	}*/
-	
 	@PostMapping("/frete")
 	public ResponseEntity<String> calculaFrete(@RequestBody Correio correio) {
 		

@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.helpconnect.LojaVirtual.model.Cliente;
 import br.com.helpconnect.LojaVirtual.model.Compras;
 import br.com.helpconnect.LojaVirtual.model.Produto;
 import br.com.helpconnect.LojaVirtual.repository.CompraRepository;
 import br.com.helpconnect.LojaVirtual.service.CompraService;
 import br.com.helpconnect.LojaVirtual.service.CorreioService;
+import br.com.helpconnect.LojaVirtual.service.SendMailService;
 
 @RestController
 @RequestMapping("/compras")
@@ -37,6 +39,9 @@ public class CompraController {
 	
 	@Autowired
 	private CorreioService correioService;
+	
+	@Autowired
+	private SendMailService sendMailService;
 	
 	@GetMapping
 	public ResponseEntity<List<Compras>> findAllCompras() {
@@ -96,6 +101,33 @@ public class CompraController {
 		compra.setNumeroPedido(service.geraNumeroCompra(compra));
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(compra));
+	}
+	
+	@GetMapping("/email/{id}")
+	public ResponseEntity<Boolean> enviarEmail(@PathVariable("id") long id) {
+		
+		Optional<Compras> compra = repository.findById(id);
+		
+		// AJUSTA VALOR CARRINHO
+		double total = compra.get().getValorTotal();
+		NumberFormat formatter = new DecimalFormat("#0.00");
+		compra.get().setValorTotal(Double.parseDouble(formatter.format(total).replace(",", ".")));
+
+		compra.get().setMeuPedido(service.retirraDuplicidadeCarrinho(compra));
+		
+		boolean retorno = false;
+		
+		retorno = sendMailService.sendMail(compra.get());
+		
+		return ResponseEntity.ok(retorno);
+	}
+	
+	@GetMapping("/reescrever-email/{id}")
+	public ResponseEntity<String> lerArquivo(@PathVariable("id") long id) {
+		
+		Optional<Compras> compraExistente = repository.findById(id);
+		
+		return ResponseEntity.ok(sendMailService.GerandoEmailStatusPedido(compraExistente.get()));
 	}
 	
 	@PutMapping
