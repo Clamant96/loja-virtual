@@ -52,7 +52,7 @@ public class SendMailService {
 
             protected PasswordAuthentication getPasswordAuthentication() {
 
-                return new PasswordAuthentication("kevin.helpconnect@gmail.com", "<senha-envio-email>");
+                return new PasswordAuthentication("kevin.helpconnect@gmail.com", "nwvindwhxgyapfmz");
 
             }
 
